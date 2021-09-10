@@ -42,7 +42,7 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
     return asteroidList
 }
 
-private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
+fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 
     val calendar = Calendar.getInstance()
@@ -54,4 +54,17 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     }
 
     return formattedDateList
+}
+
+fun getToday(): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val cal = Calendar.getInstance()
+    return sdf.format(cal.time)
+}
+
+fun getSevenDaysFromToday(): String {
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val cal = Calendar.getInstance()
+    cal.add(Calendar.DAY_OF_MONTH, 7)
+    return sdf.format(cal.time)
 }
