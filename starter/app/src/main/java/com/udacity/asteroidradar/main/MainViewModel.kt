@@ -9,6 +9,7 @@ import com.udacity.asteroidradar.api.Api
 import com.udacity.asteroidradar.api.AsteroidSelection
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
+import com.udacity.asteroidradar.repository.POTDRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.text.SimpleDateFormat
@@ -19,6 +20,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = AsteroidDatabase.getInstance(application)
     private val repository = AsteroidRepository(database)
+    private val pictureOfTheDayRepository = POTDRepository()
 
     private val _status = MutableLiveData<NetworkStatus>()
     val status: LiveData<NetworkStatus>
@@ -60,12 +62,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun getPictureOfDay() {
         viewModelScope.launch {
             _status.value = NetworkStatus.LOADING
-            try {
-                _pictureOfDay.value = Api.retrofitService.getPictureOfDay(API_KEY)
-                _status.value = NetworkStatus.DONE
-            } catch(e: HttpException) {
-                _status.value = NetworkStatus.ERROR
-            }
+            val pictureOfDay = pictureOfTheDayRepository.getPictureOfTheDay()
+            _pictureOfDay.value = pictureOfDay
         }
     }
 
